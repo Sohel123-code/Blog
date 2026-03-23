@@ -1,0 +1,325 @@
+/* ===========================================================
+   BLOG HOME v3 – layout2 reference (content left, image right)
+   Image bridges the white / navy split
+=========================================================== */
+
+/* ── Keyframes ── */
+@keyframes blogFadeUp {
+  from { opacity: 0; transform: translateY(28px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+@keyframes blogSlideLeft {
+  from { opacity: 0; transform: translateX(40px); }
+  to   { opacity: 1; transform: translateX(0); }
+}
+@keyframes dotBlink   { 0%,100%{opacity:1} 50%{opacity:0.35} }
+@keyframes typingCursor { 0%,100%{opacity:1} 50%{opacity:0} }
+@keyframes marqueeScroll { from{transform:translateX(0)} to{transform:translateX(-50%)} }
+@keyframes scrollWheel { 0%{opacity:1;transform:translateY(0)} 100%{opacity:0;transform:translateY(10px)} }
+@keyframes badgePop {
+  0%  { transform: scale(0.8) translateY(8px); opacity: 0 }
+  100%{ transform: scale(1) translateY(0);     opacity: 1 }
+}
+
+/* ── Stagger helpers (Slowed down) ── */
+.blog-anim-1 { opacity:0; animation: blogFadeUp 0.85s cubic-bezier(.22,1,.36,1) .10s forwards }
+.blog-anim-2 { opacity:0; animation: blogFadeUp 0.90s cubic-bezier(.22,1,.36,1) .24s forwards }
+.blog-anim-3 { opacity:0; animation: blogFadeUp 0.85s cubic-bezier(.22,1,.36,1) .40s forwards }
+.blog-anim-4 { opacity:0; animation: blogFadeUp 0.85s cubic-bezier(.22,1,.36,1) .56s forwards }
+.blog-anim-img { opacity:0; animation: blogSlideLeft 1.05s cubic-bezier(.22,1,.36,1) .30s forwards }
+
+/* ── Scroll-reveal for announcement cards ── */
+.reveal-out { opacity:0; transform:translateY(22px); transition:opacity .55s ease, transform .55s ease }
+.reveal-in  { opacity:1; transform:translateY(0);    transition:opacity .55s ease, transform .55s ease }
+
+/* ===================================================
+   MARQUEE TICKER
+=================================================== */
+.ticker-bar {
+  background: var(--secondary);
+  color: rgba(255,255,255,.82);
+  display: flex;
+  align-items: center;
+  height: 36px;
+  overflow: hidden;
+  font-size: .78rem;
+  font-weight: 500;
+  position: relative;
+  z-index: 1001;
+}
+.ticker-label {
+  background: var(--primary);
+  color: #fff;
+  font-size: .67rem; font-weight: 800;
+  letter-spacing: 2px; text-transform: uppercase;
+  padding: 0 18px; height: 100%;
+  display: flex; align-items: center;
+  flex-shrink: 0; white-space: nowrap;
+}
+.ticker-track  { flex: 1; overflow: hidden; }
+.ticker-content {
+  display: flex; white-space: nowrap;
+  animation: marqueeScroll 36s linear infinite;
+}
+.ticker-item { padding: 0 36px; opacity: .88; flex-shrink: 0; }
+.ticker-dot  { color: rgba(255,255,255,.3); margin-right: 8px; font-size: .52rem; vertical-align: middle; }
+
+/* ===================================================
+   NAV
+=================================================== */
+.blog-nav { padding: 14px 0; }
+.blog-brand { display: flex; align-items: center; gap: 4px; }
+.blog-brand-name  { font-size: 1.3rem; font-weight: 900; color: var(--primary); letter-spacing: -.5px; }
+.blog-brand-sep   { color: #bbb; margin: 0 3px; font-weight: 300; }
+.blog-brand-label { font-size: .9rem; font-weight: 500; color: #666; }
+
+.nav-text-link {
+  background: none; border: none;
+  font-family: inherit; font-size: .92rem; font-weight: 600;
+  color: #444; cursor: pointer; padding: 6px 2px;
+  position: relative;
+}
+.nav-text-link::after {
+  content: ''; position: absolute;
+  bottom: 0; left: 0; width: 0; height: 2px;
+  background: var(--primary); transition: width .22s ease;
+}
+.nav-text-link:hover::after { width: 100%; }
+.nav-text-link:hover { color: var(--primary); }
+
+/* ===================================================
+   SPLIT HERO  –  the key layout piece
+   White left (55%) | Navy right (45%)
+   Image sits in the navy panel but extends
+   80px into the white panel via negative margin
+=================================================== */
+.split-hero {
+  display: grid;
+  grid-template-columns: 55% 45%;
+  min-height: calc(100vh - 106px);
+  overflow: visible;  /* allow image bleed */
+}
+
+/* ── Left: white content panel ── */
+.split-left {
+  background: #f6f7fb;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 72px 60px 80px 80px;
+  position: relative;
+  z-index: 2;
+}
+
+/* faint watermark text */
+.split-left::after {
+  content: '2026';
+  position: absolute;
+  bottom: 16px; right: 32px;
+  font-size: 8rem; font-weight: 900;
+  color: rgba(55,49,156,.05);
+  pointer-events: none; user-select: none;
+  line-height: 1;
+}
+
+.split-label {
+  display: flex; align-items: center; gap: 9px;
+  font-size: .78rem; font-weight: 700;
+  letter-spacing: 2.5px; text-transform: uppercase;
+  color: var(--primary); margin: 0 0 12px;
+}
+.blog-hero-dot {
+  width: 8px; height: 8px; border-radius: 50%;
+  background: var(--primary); flex-shrink: 0;
+  animation: dotBlink 2s ease-in-out infinite;
+  display: inline-block;
+}
+
+.split-title {
+  font-size: clamp(2.4rem, 4vw, 4rem);
+  font-weight: 900;
+  line-height: 1.1;
+  color: #0c1322;
+  margin: 0 0 22px;
+  letter-spacing: -1.5px;
+}
+.split-title-rest {
+  display: block;
+  color: #52596b;
+  font-weight: 700;
+  font-size: .84em;
+  letter-spacing: -.5px;
+  margin-top: 6px;
+}
+.typing-word   { color: var(--primary); }
+.typing-cursor {
+  display: inline-block; margin-left: 1px;
+  color: var(--primary);
+  animation: typingCursor .75s step-start infinite;
+}
+
+.split-sub {
+  font-size: 1rem; line-height: 1.82;
+  color: #5f687a; max-width: 390px;
+  margin: 0 0 36px;
+}
+
+.split-actions { display: flex; align-items: center; gap: 16px; margin-bottom: 32px; }
+
+/* Primary CTA – solid, no hover transform */
+.split-cta-primary {
+  display: inline-flex; align-items: center; gap: 8px;
+  background: var(--secondary); color: #fff;
+  border: none; padding: 13px 32px;
+  border-radius: 6px; font-size: .97rem; font-weight: 700;
+  cursor: pointer; font-family: inherit;
+  letter-spacing: .2px;
+}
+
+.split-links { display: flex; gap: 28px; flex-wrap: wrap; }
+.split-quick-link {
+  background: none; border: none; font-family: inherit;
+  font-size: .88rem; font-weight: 600;
+  color: #5f687a; cursor: pointer; padding: 0;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+/* ── Right: navy panel ── */
+.split-right {
+  background: var(--secondary);
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 48px 48px 48px 0;
+  overflow: visible;
+}
+
+/* dot-grid subtle texture */
+.split-right::before {
+  content: '';
+  position: absolute; inset: 0;
+  background-image: radial-gradient(rgba(255,255,255,.055) 1px, transparent 1px);
+  background-size: 22px 22px;
+  pointer-events: none;
+}
+
+/*
+  THE KEY TRICK:
+  The image frame has a negative left margin (-80px) so it
+  bleeds into the white panel — sitting "between" the two
+  background colors, exactly like the reference layout.
+*/
+.split-img-frame {
+  position: relative; z-index: 3;
+  width: calc(100% + 80px);   /* wider than its column */
+  max-width: 560px;
+  aspect-ratio: 4 / 3;
+  margin-left: -80px;         /* bleed into white panel */
+  border-radius: 16px;
+  overflow: hidden;
+  box-shadow: 0 24px 72px rgba(0,0,0,.35);
+}
+
+.split-img {
+  width: 100%; height: 100%;
+  background-size: cover;
+  background-position: center;
+}
+
+/* Glass badge on the image */
+.split-badge {
+  position: absolute; bottom: 20px; left: 20px;
+  background: rgba(255,255,255,.96);
+  border-radius: 10px; padding: 12px 18px;
+  display: flex; flex-direction: column;
+  box-shadow: 0 6px 20px rgba(0,0,0,.14);
+  animation: badgePop .5s cubic-bezier(.22,1,.36,1) .9s both;
+}
+.split-badge-num { font-size: 1.45rem; font-weight: 900; color: var(--primary); line-height: 1; }
+.split-badge-txt { font-size: .7rem; font-weight: 600; color: #596070; margin-top: 2px; }
+
+/* ===================================================
+   STATS STRIP
+=================================================== */
+.stats-strip {
+  background: var(--primary);
+  display: flex; align-items: center;
+  justify-content: space-around;
+  padding: 36px 60px; flex-wrap: wrap; gap: 20px;
+}
+.stat-item   { display: flex; flex-direction: column; align-items: center; gap: 4px; }
+.stat-number { font-size: 2.4rem; font-weight: 900; color: #fff; line-height: 1; letter-spacing: -1px; }
+.stat-label  { font-size: .78rem; font-weight: 600; color: rgba(255,255,255,.58); text-transform: uppercase; letter-spacing: 1px; }
+
+/* ===================================================
+   ANNOUNCEMENTS
+=================================================== */
+.blog-announcements-section { background: #f8fafc; padding: 84px 0 72px; border-top: 1px solid #eef2f6; }
+.blog-section-container { max-width: 1280px; margin: 0 auto; padding: 0 60px; }
+.blog-section-header { margin-bottom: 44px; }
+
+.section-overline {
+  font-size: .74rem; font-weight: 800; letter-spacing: 3px;
+  text-transform: uppercase; color: var(--primary); margin: 0 0 10px;
+}
+.section-big-title {
+  font-size: clamp(1.9rem, 3vw, 2.6rem); font-weight: 900;
+  color: #0c1322; margin: 0 0 8px;
+  letter-spacing: -.8px; line-height: 1.1;
+}
+.h2-accent { color: var(--primary); }
+.blog-section-sub { color: #64748b; font-size: .97rem; margin: 0; }
+
+.blog-announce-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 20px;
+}
+
+/* Clean blog card – no hover transform */
+.announce-card {
+  background: #fff;
+  border-radius: 12px;
+  padding: 24px;
+  border: 1px solid #e8ecf4;
+  box-shadow: 0 1px 6px rgba(0,0,0,.04);
+  display: flex; flex-direction: column; gap: 8px;
+}
+.announce-tag {
+  display: inline-block;
+  background: #eef2ff; color: var(--primary);
+  font-size: .66rem; font-weight: 800;
+  letter-spacing: 1.2px; text-transform: uppercase;
+  padding: 3px 10px; border-radius: 999px; width: fit-content;
+}
+
+/* ===================================================
+   RESPONSIVE
+=================================================== */
+@media (max-width: 1100px) {
+  .split-left { padding: 60px 40px 72px 48px; }
+  .split-right { padding: 40px 32px 40px 0; }
+  .split-img-frame { margin-left: -48px; width: calc(100% + 48px); }
+  .blog-section-container { padding: 0 40px; }
+  .stats-strip { padding: 28px 40px; }
+}
+
+@media (max-width: 860px) {
+  .split-hero { grid-template-columns: 1fr; }
+  .split-left { padding: 52px 24px 44px; align-items: flex-start; }
+  .split-left::after { display: none; }
+  .split-sub { max-width: 100%; }
+  .split-right { padding: 0 24px 48px; }
+  .split-img-frame { margin-left: 0; width: 100%; max-width: 100%; aspect-ratio: 16/9; }
+  .blog-section-container { padding: 0 24px; }
+  .blog-announcements-section { padding: 56px 0; }
+  .stats-strip { padding: 24px; }
+  .stat-number { font-size: 2rem; }
+}
+
+@media (max-width: 480px) {
+  .split-title { font-size: 2.2rem; letter-spacing: -.5px; }
+  .blog-announce-grid { grid-template-columns: 1fr; }
+}
