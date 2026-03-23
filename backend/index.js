@@ -22,6 +22,7 @@ connectDB();
 app.use('/', eventRoutes); // Maintaining legacy paths without /api prefix
 
 // Base Health Check
+app.get("/", (req, res) => res.json({ message: "VIIT Events API is running", status: "online" }));
 app.get("/ping", (req, res) => res.send("pong"));
 
 const PORT = process.env.PORT || 3000;
