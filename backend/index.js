@@ -6,7 +6,23 @@ const eventRoutes = require('./routes/eventRoutes');
 
 const app = express();
 
-app.use(cors());
+const allowedOrigins = [
+    'https://blog-4-0dfs.onrender.com',
+    'http://localhost:5173', // Vite default local
+    'http://localhost:3000'
+];
+
+app.use(cors({
+    origin: (origin, callback) => {
+        if (!origin || allowedOrigins.includes(origin)) {
+            callback(null, true);
+        } else {
+            callback(new Error('Not allowed by CORS'));
+        }
+    },
+    credentials: true
+}));
+
 app.use(express.json());
 
 // Global Logger

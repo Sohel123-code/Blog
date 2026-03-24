@@ -5,12 +5,20 @@ const fs = require('fs');
 
 exports.createEvent = async (req, res) => {
     try {
-        const result = await cloudinary.uploader.upload(req.file.path);
-        const organisers = JSON.parse(req.body.organisers);
-        const timeline = JSON.parse(req.body.timeline);
-        const timings = JSON.parse(req.body.timings);
+        if (!req.file) {
+            return res.status(400).json({ message: "Poster image is required" });
+        }
 
-        await Event.collection.insertOne({
+        console.log("Uploading poster to Cloudinary:", req.file.path);
+        const result = await cloudinary.uploader.upload(req.file.path, {
+            folder: "vignan_events/posters"
+        });
+
+        const organisers = JSON.parse(req.body.organisers || "[]");
+        const timeline = JSON.parse(req.body.timeline || "[]");
+        const timings = JSON.parse(req.body.timings || "{}");
+
+        const newEvent = new Event({
             title: req.body.title,
             type: req.body.type,
             description: req.body.description,
@@ -24,9 +32,13 @@ exports.createEvent = async (req, res) => {
             poster: { url: result.secure_url, public_id: result.public_id }
         });
 
+        await newEvent.save();
+
         fs.unlinkSync(req.file.path);
         res.status(201).send("successful");
     } catch (error) {
+        console.error("Create Event Error:", error);
+        if (req.file && fs.existsSync(req.file.path)) fs.unlinkSync(req.file.path);
         res.status(500).json({ message: error.message });
     }
 };
