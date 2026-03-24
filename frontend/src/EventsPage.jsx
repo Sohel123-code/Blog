@@ -242,12 +242,24 @@ export default function EventsPage({ userRole, setUserRole }) {
   /* ── Data fetching ── */
   const fetchCategoryEvents = async (catType) => {
     setIsLoading(true);
+    const baseUrl = import.meta.env.VITE_API_BASE_URL || 'http://localhost:3000';
+    const fetchUrl = `${baseUrl}/allevents/${catType}`;
+    
+    console.log(`Fetching events from: ${fetchUrl}`);
+    
     try {
-      const baseUrl = import.meta.env.VITE_API_BASE_URL || 'http://localhost:3000';
-      const res = await fetch(`${baseUrl}/allevents/${catType}`);
-      if (!res.ok) throw new Error('fetch failed');
-      setCategoryEvents(await res.json());
-    } catch { setCategoryEvents([]); }
+      const res = await fetch(fetchUrl);
+      if (!res.ok) {
+        const errorText = await res.text();
+        throw new Error(`Fetch failed with status ${res.status}: ${errorText}`);
+      }
+      const data = await res.json();
+      console.log(`Successfully fetched ${data.length} events for ${catType}`);
+      setCategoryEvents(data);
+    } catch (err) { 
+      console.error("Error fetching category events:", err);
+      setCategoryEvents([]); 
+    }
     finally { setIsLoading(false); }
   };
 

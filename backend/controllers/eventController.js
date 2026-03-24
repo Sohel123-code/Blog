@@ -46,9 +46,17 @@ exports.createEvent = async (req, res) => {
 exports.getEventsByType = async (request, response) => {
     try {
         const { type } = request.params;
-        const data = await Event.find({ type: type });
+        console.log(`Searching events for type: ${type}`);
+        
+        // Case-insensitive regex match
+        const data = await Event.find({ 
+            type: { $regex: new RegExp(`^${type}$`, 'i') } 
+        });
+        
+        console.log(`Found ${data.length} events for type: ${type}`);
         response.status(200).send(data);
     } catch (err) {
+        console.error("Error in getEventsByType:", err);
         response.status(500).send(err.message);
     }
 };

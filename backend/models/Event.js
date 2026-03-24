@@ -17,4 +17,4 @@ const eventSchema = new mongoose.Schema({
     poster: { url: String, public_id: String }
 });
 
-module.exports = mongoose.model("event", eventSchema);
+module.exports = mongoose.model("event", eventSchema, "events");
