@@ -109,7 +109,7 @@
 
 .blog-anim-img {
   opacity: 0;
-  animation: blogSlideLeft 1.05s cubic-bezier(.22, 1, .36, 1) .30s forwards
+  animation: blogSlideLeft 1.05s cubic-bezier(.22, 1, .36, 1) .30s forwards;
 }
 
 /* ── Scroll-reveal for announcement cards ── */
@@ -418,8 +418,13 @@
   /* wider than its column */
   max-width: 580px;
   aspect-ratio: 4 / 3;
-  margin-left: -100px;
-  /* bleed further into white panel */
+  margin-left: -140px;
+  /* Reduced bleed for a tighter look */
+  width: 100%;
+  max-width: 600px;
+  /* Reduced from 680px */
+  min-height: 480px;
+  /* Reduced from 520px */
   border-radius: 20px;
   overflow: hidden;
   box-shadow: 0 32px 80px rgba(0, 0, 0, .35);
@@ -590,21 +595,35 @@
 
 .highlight-card {
   background: #f8fafc;
-  border-radius: 16px;
+  border-radius: 20px;
   overflow: hidden;
-  border: 1px solid #e2e8f0;
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  border: 1px solid #e8ecf4;
+  transition: all 0.6s cubic-bezier(0.165, 0.84, 0.44, 1);
 }
 
 .highlight-card:hover {
-  transform: translateY(-8px);
-  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.06);
+  /* Official, clean lift without heavy rotation or scale */
+  transform: translateY(-6px);
+  box-shadow: 0 24px 48px rgba(28, 51, 80, 0.10);
+}
+
+.split-hero:hover .split-img-frame {
+  /* Subtle, elegant lift */
+  transform: translateY(-4px);
+  box-shadow: 0 40px 90px rgba(0, 0, 0, .45);
 }
 
 .highlight-card-img {
-  height: 220px;
+  width: 100%;
+  height: 260px; /* Reduced from 320px */
   background-size: cover;
   background-position: center;
+  border-bottom: 1px solid #eef2f6;
+  transition: opacity 0.6s ease;
+}
+
+.highlight-card:hover .highlight-card-img {
+  opacity: 0.95;
 }
 
 .highlight-card-body {

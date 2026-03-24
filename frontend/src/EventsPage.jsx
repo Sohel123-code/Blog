@@ -17,7 +17,7 @@ const EVENT_CATEGORIES = [
     description:
       'Expand your academic horizons through workshops, seminars, guest lectures, conferences, and technical talks. These learning-focused events bring industry experts and scholars to campus, offering students a chance to gain insights beyond the classroom.',
     types: ['Workshops', 'Seminars', 'Guest Lectures', 'Conferences', 'Technical Talks'],
-    image: '/images/1_DEmjwMFD4JTqtdasWJ5Reg.jpg',
+    image: '/images/r4.jpeg',
     color: '#3b6cb7',
   },
   {
@@ -28,7 +28,7 @@ const EVENT_CATEGORIES = [
     description:
       'Put your engineering skills to the test in coding competitions, hackathons, project expos, and tech fests. These events are perfect for CSE and Engineering students looking to showcase their projects, collaborate, and compete at the highest level.',
     types: ['Coding Competitions', 'Hackathons', 'Project Expos', 'Tech Fests', 'Paper Presentations'],
-    image: '/images/IMG_20190208_111641.jpg',
+    image: '/images/r16.jpeg',
     color: '#37319c',
   },
   {
@@ -39,7 +39,7 @@ const EVENT_CATEGORIES = [
     description:
       'Celebrate talent, creativity, and culture through dance programs, music shows, drama and skits, festive celebrations, and talent shows. These vibrant events bring the campus to life and give students a platform to express themselves.',
     types: ['Dance Programs', 'Music Shows', 'Drama / Skits', 'Fest Celebrations', 'Talent Shows'],
-    image: '/images/college-fest.jpg',
+    image: '/images/r3.jpeg',
     color: '#7c3aed',
   },
   {
@@ -50,7 +50,7 @@ const EVENT_CATEGORIES = [
     description:
       'Stay active and competitive with cricket matches, football tournaments, athletics, and indoor games. Sports events at VIIT encourage teamwork, sportsmanship, and physical fitness among all students.',
     types: ['Cricket Matches', 'Football Tournaments', 'Athletics', 'Indoor Games'],
-    image: '/images/download.jpeg',
+    image: '/images/sports.webp',
     color: '#0f766e',
   },
   {
@@ -61,7 +61,7 @@ const EVENT_CATEGORIES = [
     description:
       'Join the Coding Club, Robotics Club, Literary Club, Photography Club and many more. Student-run clubs organize a wide range of events that help build skills, foster community, and ignite passions outside the regular curriculum.',
     types: ['Coding Club Events', 'Robotics Club', 'Literary Club', 'Photography Club'],
-    image: '/images/1_DEmjwMFD4JTqtdasWJ5Reg.jpg',
+    image: '/images/r10.jpeg',
     color: '#b45309',
   },
   {
@@ -72,7 +72,7 @@ const EVENT_CATEGORIES = [
     description:
       'Kickstart your career with placement drives, internship programs, career guidance sessions, and resume workshops. These events connect students with top recruiters and equip them with the skills needed to thrive in the competitive job market.',
     types: ['Placement Drives', 'Internship Programs', 'Career Guidance Sessions', 'Resume Workshops'],
-    image: '/images/i4.png',
+    image: '/images/r14.jpeg',
     color: '#1c3350',
   },
   {
@@ -83,7 +83,7 @@ const EVENT_CATEGORIES = [
     description:
       'Give back to society through blood donation camps, NSS activities, awareness programs, and charity events. These initiatives cultivate empathy, leadership, and a sense of civic responsibility among VIIT students.',
     types: ['Blood Donation Camps', 'NSS Activities', 'Awareness Programs', 'Charity Events'],
-    image: '/images/images.jpeg',
+    image: '/images/r11.jpeg',
     color: '#be123c',
   },
   {
@@ -94,7 +94,7 @@ const EVENT_CATEGORIES = [
     description:
       'Keep up with holidays, circulars, important notices, and exam updates. This section ensures every student stays informed about institutional announcements and critical academic updates throughout the semester.',
     types: ['Holidays', 'Circulars', 'Important Notices', 'Exam Updates'],
-    image: '/images/images (1).jpeg',
+    image: '/images/r16.jpeg',
     color: '#374151',
   },
 ];
@@ -740,9 +740,9 @@ export default function EventsPage({ userRole, setUserRole }) {
           </div>
 
           <div className="ep-hero-cluster">
-            <div className="cluster-img cluster-1 blog-anim-2" style={{ backgroundImage: "url('/images/1_DEmjwMFD4JTqtdasWJ5Reg.jpg')" }} />
-            <div className="cluster-img cluster-2 blog-anim-3" style={{ backgroundImage: "url('/images/college-fest.jpg')" }} />
-            <div className="cluster-img cluster-3 blog-anim-4" style={{ backgroundImage: "url('/images/IMG_20190208_111641.jpg')" }} />
+            <div className="cluster-img cluster-1 blog-anim-2" style={{ backgroundImage: "url('/images/r3.jpeg')" }} />
+            <div className="cluster-img cluster-2 blog-anim-3" style={{ backgroundImage: "url('/images/r12.jpeg')" }} />
+            <div className="cluster-img cluster-3 blog-anim-4" style={{ backgroundImage: "url('/images/r5.jpeg')" }} />
           </div>
         </div>
       )}
