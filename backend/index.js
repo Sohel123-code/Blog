@@ -5,11 +5,12 @@ const mongoose = require('mongoose');
 const multer = require('multer');
 const cloudinary = require('cloudinary').v2;
 const fs = require('fs');
+const { v4: uuidv4 } = require('uuid');
 
 const app = express();
 
 // Middleware
-app.use(cors()); // Restored to open CORS as per user request
+app.use(cors());
 app.use(express.json());
 
 // Cloudinary Configuration
@@ -27,31 +28,38 @@ mongoose.connect(process.env.MONGODB_URI)
     .then(() => console.log("✅ MongoDB Connected Automatically"))
     .catch(err => console.error("❌ MongoDB Connection Error:", err));
 
-// Models
+// Models - RESTORED EXACTLY FROM FILES
 const eventSchema = new mongoose.Schema({
-    title: { type: String, required: true },
-    type: { type: String, required: true },
+    title: { type: String, required: true, trim: true },
+    type: { type: String, required: true, trim: true },
     description: { type: String, required: true },
     details: { type: String, required: true },
-    venue: { type: String, required: true },
-    organisers: [{ type: String }],
-    timeline: [{ stage: String, date: String }],
-    timings: { start: String, end: String },
-    createdBy: { type: String },
+    venue: { type: String, required: true, trim: true },
+    organisers: [{ type: String, required: true }],
+    timeline: [{ date: { type: String, required: true } }],
+    timings: {
+        start: { type: String, required: true },
+        end: { type: String, required: true }
+    },
+    createdBy: { type: String, required: true },
     isActive: { type: Boolean, default: true },
     poster: { url: String, public_id: String }
 });
 
 const Event = mongoose.model("event", eventSchema, "events");
 
-const eventImageSchema = new mongoose.Schema({
-    _id: String,
-    poster: [{ url: String }]
+const eventPhotosSchema = new mongoose.Schema({
+    poster: [
+        {
+            imageId: { type: String, default: uuidv4 },
+            url: { type: String, required: true },
+        }
+    ]
 });
 
-const EventImages = mongoose.model("eventimage", eventImageSchema, "eventimages");
+const EventImages = mongoose.model("EventImages", eventPhotosSchema);
 
-// Routes
+// Routes - RESTORED LOGIC
 
 // 1. Create New Event
 app.post('/newevent', upload.single('poster'), async (req, res) => {
@@ -62,6 +70,7 @@ app.post('/newevent', upload.single('poster'), async (req, res) => {
             folder: "vignan_events"
         });
 
+        // Use exact logic from previous working state
         const organisers = JSON.parse(req.body.organisers || "[]");
         const timeline = JSON.parse(req.body.timeline || "[]");
         const timings = JSON.parse(req.body.timings || "{}");
@@ -81,7 +90,7 @@ app.post('/newevent', upload.single('poster'), async (req, res) => {
         });
 
         await newEvent.save();
-        fs.unlinkSync(req.file.path);
+        if (fs.existsSync(req.file.path)) fs.unlinkSync(req.file.path);
         res.status(201).send("successful");
     } catch (error) {
         console.error("Create Event Error:", error);
@@ -93,14 +102,14 @@ app.post('/newevent', upload.single('poster'), async (req, res) => {
 app.get('/allevents/:type', async (req, res) => {
     try {
         const { type } = req.params;
-        const data = await Event.find({ type: type }); // Restored exact match
+        const data = await Event.find({ type: type }); // Exact match as requested
         res.status(200).send(data);
     } catch (err) {
         res.status(500).send(err.message);
     }
 });
 
-// 3. Get All Events (Simplified)
+// 3. Get All Events
 app.get('/all-events', async (req, res) => {
     try {
         const events = await Event.find({}, 'title type _id');
@@ -127,15 +136,18 @@ app.post('/event-images', upload.single('images'), async (req, res) => {
             fs.createReadStream(req.file.path).pipe(stream);
         });
 
+        const imageData = { url: result.secure_url };
+
         await EventImages.findByIdAndUpdate(
             id,
-            { $push: { poster: { url: result.secure_url } } },
-            { upsert: true }
+            { $push: { poster: imageData } },
+            { new: true, runValidators: true, upsert: true }
         );
 
-        fs.unlinkSync(req.file.path);
+        if (fs.existsSync(req.file.path)) fs.unlinkSync(req.file.path);
         res.status(201).send("added successfully");
     } catch (error) {
+        console.error("Upload Error:", error);
         res.status(500).send(error.message);
     }
 });
@@ -151,9 +163,8 @@ app.post('/images-receive', async (req, res) => {
     }
 });
 
-// Health Checks
-app.get("/", (req, res) => res.json({ message: "VIIT Events API is running", status: "online" }));
-app.get("/ping", (req, res) => res.send("pong"));
+// Health Check
+app.get("/", (req, res) => res.json({ message: "API is live" }));
 
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, "0.0.0.0", () => {
