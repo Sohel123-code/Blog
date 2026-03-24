@@ -230,7 +230,6 @@ export default function EventsPage({ userRole, setUserRole }) {
   const [selectedEvent, setSelectedEvent] = React.useState(null);
   const [visiblePhotosCount, setVisiblePhotosCount] = React.useState(12);
   const [selectedPhotoIndex, setSelectedPhotoIndex] = React.useState(null);
-  const [isSlideshowPlaying, setIsSlideshowPlaying] = React.useState(false);
 
   const isStudent = userRole !== 'faculty';
   useScreenshotBlur(containerRef, isStudent);
@@ -275,7 +274,6 @@ export default function EventsPage({ userRole, setUserRole }) {
     setCurrentView('gallery');
     setVisiblePhotosCount(12);
     setSelectedPhotoIndex(null);
-    setIsSlideshowPlaying(false);
     fetchCategoryEvents(cat.type);
   };
 
@@ -298,7 +296,6 @@ export default function EventsPage({ userRole, setUserRole }) {
       setCurrentView('detail');
       setVisiblePhotosCount(12);
       setSelectedPhotoIndex(null);
-      setIsSlideshowPlaying(false);
     } catch {
       setSelectedEvent({ ...event, allPhotos: event.poster?.url ? [event.poster.url] : [] });
       setCurrentView('detail');
@@ -315,7 +312,6 @@ export default function EventsPage({ userRole, setUserRole }) {
     setSelectedEvent(null);
     setVisiblePhotosCount(12);
     setSelectedPhotoIndex(null);
-    setIsSlideshowPlaying(false);
   };
 
   /* ── Shared nav pills ── */
@@ -621,16 +617,9 @@ export default function EventsPage({ userRole, setUserRole }) {
                 <div className="ed-info-card-footer" style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
                   <button 
                     className="btn-primary ed-view-gallery-btn" 
-                    onClick={() => { setSelectedPhotoIndex(0); setIsSlideshowPlaying(false); }}
+                    onClick={() => { setSelectedPhotoIndex(0); }}
                   >
                     View Gallery ({ev.allPhotos.length})
-                  </button>
-                  <button 
-                    className="btn-outline ed-view-gallery-btn" 
-                    style={{ borderColor: 'var(--primary)', color: 'var(--primary)' }}
-                    onClick={() => { setSelectedPhotoIndex(0); setIsSlideshowPlaying(true); }}
-                  >
-                    ▶ Play Slideshow
                   </button>
                 </div>
               )}
@@ -641,31 +630,29 @@ export default function EventsPage({ userRole, setUserRole }) {
         {/* ── Native Lightbox ── */}
         {selectedPhotoIndex !== null && (
           <div
-            className={`lightbox-overlay ${isSlideshowPlaying ? 'slideshow-active' : ''}`}
-            onClick={() => { setSelectedPhotoIndex(null); setIsSlideshowPlaying(false); }}
+            className="lightbox-overlay"
+            onClick={() => { setSelectedPhotoIndex(null); }}
             onContextMenu={e => isStudent && e.preventDefault()}
           >
-            <div className="lb-top-bar" style={{ zIndex: 100 }}>
-              <span className="lb-counter" style={{ padding: '8px 16px', background: 'rgba(0,0,0,0.6)', borderRadius: '20px', color: 'white', fontWeight: 600 }}>
+            <div className="lb-top-bar">
+              <span className="lb-counter">
                 {selectedPhotoIndex + 1} / {ev.allPhotos.length}
               </span>
               <button 
                 className="lb-close" 
-                onClick={() => { setSelectedPhotoIndex(null); setIsSlideshowPlaying(false); }}
-                style={{ background: 'rgba(0,0,0,0.5)', padding: '5px', borderRadius: '50%', color: 'white' }}
+                onClick={() => { setSelectedPhotoIndex(null); }}
               >
                 <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
               </button>
             </div>
 
-            <div className="lightbox-content" onClick={e => e.stopPropagation()} style={{ width: '100%', height: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center', position: 'relative' }}>
+            <div className="lightbox-content" onClick={e => e.stopPropagation()}>
               <button
                 className="lb-nav lb-prev"
                 onClick={e => { e.stopPropagation(); setSelectedPhotoIndex(p => (p - 1 + ev.allPhotos.length) % ev.allPhotos.length); }}
-                style={{ position: 'absolute', left: '20px', zIndex: 10, background: 'rgba(0,0,0,0.5)', color: 'white', border: 'none', borderRadius: '50%', width: '50px', height: '50px', fontSize: '24px', display: 'flex', alignItems: 'center', justifyContent: 'center', cursor: 'pointer' }}
               >‹</button>
 
-              <div className={`lightbox-img-container protected-img-container watermark-overlay${isStudent ? ' no-drag' : ''}`} style={{ maxWidth: '90vw', maxHeight: '90vh' }}>
+              <div className={`lightbox-img-container protected-img-container watermark-overlay${isStudent ? ' no-drag' : ''}`}>
                 <img
                   key={selectedPhotoIndex}
                   src={ev.allPhotos[selectedPhotoIndex]}
@@ -674,14 +661,12 @@ export default function EventsPage({ userRole, setUserRole }) {
                   onContextMenu={e => isStudent && e.preventDefault()}
                   onDragStart={e => isStudent && e.preventDefault()}
                   draggable={!isStudent}
-                  style={{ maxWidth: '100%', maxHeight: '90vh', objectFit: 'contain', borderRadius: '12px', boxShadow: '0 25px 50px -12px rgba(0,0,0,0.5)' }}
                 />
               </div>
 
               <button
                 className="lb-nav lb-next"
                 onClick={e => { e.stopPropagation(); setSelectedPhotoIndex(p => (p + 1) % ev.allPhotos.length); }}
-                style={{ position: 'absolute', right: '20px', zIndex: 10, background: 'rgba(0,0,0,0.5)', color: 'white', border: 'none', borderRadius: '50%', width: '50px', height: '50px', fontSize: '24px', display: 'flex', alignItems: 'center', justifyContent: 'center', cursor: 'pointer' }}
               >›</button>
             </div>
           </div>
