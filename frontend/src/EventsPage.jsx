@@ -349,8 +349,8 @@ export default function EventsPage({ userRole, setUserRole }) {
       <div className="ed-section-hero">
         <div className="ed-section-hero-text">
           <p className="ed-overline">Event Gallery</p>
-          <h2 className="ed-section-title">{selectedCategory.title}</h2>
-          <p className="ed-section-sub">{selectedCategory.description}</p>
+          <h2 className="ed-section-title">{selectedCategory?.title || 'Events'}</h2>
+          <p className="ed-section-sub">{selectedCategory?.description || 'Browse our collection of events.'}</p>
         </div>
       </div>
 
@@ -359,24 +359,24 @@ export default function EventsPage({ userRole, setUserRole }) {
       ) : categoryEvents.length > 0 ? (
         <div className="evgrid">
           {categoryEvents.map(ev => (
-            <article key={ev.id || ev._id} className="evcard animate-slide-in">
+            <article key={ev?._id || ev?.id || Math.random()} className="evcard animate-slide-in">
               <div className="evcard-img-wrap protected-img-container watermark-overlay">
                 <div
                   className={`bg-img-protected evcard-img${isStudent ? ' no-drag' : ''}`}
-                  style={{ backgroundImage: `url(${ev.poster?.url || ev.photos?.[0] || '/images/default-event.jpg'})` }}
+                  style={{ backgroundImage: `url(${ev?.poster?.url || ev?.photos?.[0] || '/images/default-event.jpg'})` }}
                 />
                 <div className="evcard-img-hover">
                   <span>Explore Event</span>
                 </div>
               </div>
               <div className="evcard-body">
-                {(ev.date || ev.eventDate) && (
+                {(ev?.date || ev?.eventDate) && (
                   <span className="evcard-date">
                     <IconCalendar /> {ev.date || ev.eventDate}
                   </span>
                 )}
-                <h3 className="evcard-title">{ev.title || ev.eventName}</h3>
-                {ev.venue && <p className="evcard-venue"><IconPin /> {ev.venue}</p>}
+                <h3 className="evcard-title">{ev?.title || ev?.eventName || 'Untitled Event'}</h3>
+                {ev?.venue && <p className="evcard-venue"><IconPin /> {ev.venue}</p>}
                 <button className="btn-primary evcard-btn" onClick={() => handleEventClick(ev)}>
                   View Details <IconArrowRight />
                 </button>
@@ -395,6 +395,7 @@ export default function EventsPage({ userRole, setUserRole }) {
   ══════════════════════════════════════════════════════════ */
   const renderEventDetail = () => {
     const ev = selectedEvent;
+    if (!ev) return null;
     const posterUrl = ev.poster?.url || ev.allPhotos?.[0] || null;
 
     return (
@@ -433,7 +434,7 @@ export default function EventsPage({ userRole, setUserRole }) {
               </span>
             )}
             <h1 className="split-title ed-detail-title-anim">
-              {ev.title || ev.eventName}
+              {ev.title || ev.eventName || 'Untitled Event'}
             </h1>
             <p className="split-sub blog-anim-3" style={{ maxWidth: '480px' }}>
               {ev.description || 'Discover the highlights and details of this official event hosted at Vignan Institute. Browse the gallery and timing information below.'}
@@ -503,17 +504,23 @@ export default function EventsPage({ userRole, setUserRole }) {
                   <h3 className="ed-card-title">Event Timeline</h3>
                 </div>
                 <div className="ed-timeline">
-                  {ev.timeline.map((step, i) => (
-                    <div key={i} className="ed-timeline-item">
-                      <div className="ed-timeline-dot" />
-                      <div className="ed-timeline-body">
-                        <p className="ed-timeline-date">
-                          {new Date(step.date).toLocaleDateString([], { month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit' })}
-                        </p>
-                        <p className="ed-timeline-label">{step.stage}</p>
+                  {ev.timeline.map((step, i) => {
+                    const stepDate = step?.date ? new Date(step.date) : null;
+                    const isValidDate = stepDate && !isNaN(stepDate);
+                    return (
+                      <div key={i} className="ed-timeline-item">
+                        <div className="ed-timeline-dot" />
+                        <div className="ed-timeline-body">
+                          <p className="ed-timeline-date">
+                            {isValidDate 
+                              ? stepDate.toLocaleDateString([], { month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit' })
+                              : (step?.date || 'Date TBD')}
+                          </p>
+                          {step?.stage && <p className="ed-timeline-label">{step.stage}</p>}
+                        </div>
                       </div>
-                    </div>
-                  ))}
+                    );
+                  })}
                 </div>
               </section>
             )}
@@ -574,12 +581,12 @@ export default function EventsPage({ userRole, setUserRole }) {
                     </div>
                   </div>
                 )}
-                {ev.timings && (
+                {ev?.timings && (
                   <div className="ed-info-row">
                     <span className="ed-info-icon"><IconClock /></span>
                     <div>
                       <p className="ed-info-label">Timings</p>
-                      <p className="ed-info-value">{ev.timings.start} – {ev.timings.end}</p>
+                      <p className="ed-info-value">{ev.timings?.start || 'TBD'} – {ev.timings?.end || 'TBD'}</p>
                     </div>
                   </div>
                 )}
