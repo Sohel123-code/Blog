@@ -13,6 +13,25 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 
+// Global Request Logger
+app.use((req, res, next) => {
+    console.log(`🚀 [${new Date().toISOString()}] ${req.method} ${req.url}`);
+    next();
+});
+
+// Test Route for immediate verification
+app.get('/test-api', (req, res) => {
+    res.json({ message: "Backend is working!", time: new Date().toISOString() });
+});
+
+// Dummy Events Route for debugging
+app.get('/test-events', (req, res) => {
+    res.json([
+        { _id: "1", title: "Test Event 1", type: "academic", description: "If you see this, the API is working but the DB might be empty." },
+        { _id: "2", title: "Test Event 2", type: "technical", description: "Check your MONGODB_URI in Render dashboard." }
+    ]);
+});
+
 // Cloudinary Configuration
 cloudinary.config({
     cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
@@ -102,9 +121,15 @@ app.post('/newevent', upload.single('poster'), async (req, res) => {
 app.get('/allevents/:type', async (req, res) => {
     try {
         const { type } = req.params;
-        const data = await Event.find({ type: type }); // Exact match as requested
+        console.log(`🔍 Searching for type: ${type}`);
+        // Case-insensitive regex match fixes many "not loading" issues
+        const data = await Event.find({ 
+            type: { $regex: new RegExp(`^${type}$`, 'i') } 
+        });
+        console.log(`✅ Found ${data.length} events for ${type}`);
         res.status(200).send(data);
     } catch (err) {
+        console.error("Search Error:", err);
         res.status(500).send(err.message);
     }
 });
