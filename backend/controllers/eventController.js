@@ -124,3 +124,18 @@ exports.getGalleryImages = async (request, response) => {
         response.status(500).send(err.message);
     }
 };
+
+exports.getDistinctTypes = async (req, res) => {
+    try {
+        const types = await Event.distinct('type');
+        const count = await Event.countDocuments();
+        res.status(200).json({ 
+            message: "Diagnostic data",
+            totalEvents: count,
+            existingTypes: types,
+            note: "If this list is empty, your database connection is working but the collection is empty."
+        });
+    } catch (error) {
+        res.status(500).json({ error: error.message });
+    }
+};
