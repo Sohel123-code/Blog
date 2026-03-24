@@ -3,9 +3,9 @@
   "version": "1.0.0",
   "description": "Root package for Vignan Portal (Frontend + Backend)",
   "scripts": {
-    "install:all": "npm install --prefix frontend && npm install --prefix bb/events-college-apis",
+    "install:all": "npm install --prefix frontend && npm install --prefix backend",
     "start:frontend": "npm run dev --prefix frontend",
-    "start:backend": "npm start --prefix bb/events-college-apis",
+    "start:backend": "npm start --prefix backend",
     "build:frontend": "npm run build --prefix frontend"
   }
 }
