@@ -46,6 +46,7 @@ const SecurityWrapper = ({ children, userRole }) => {
       document.body.classList.remove('blurred-content');
     };
 
+/*
     window.addEventListener('contextmenu', handleContextMenu);
     window.addEventListener('dragstart', handleDragStart);
     window.addEventListener('keydown', handleKeyDown);
@@ -59,6 +60,7 @@ const SecurityWrapper = ({ children, userRole }) => {
       window.removeEventListener('blur', handleBlur);
       window.removeEventListener('focus', handleFocus);
     };
+    */
   }, [userRole]);
 
   return (

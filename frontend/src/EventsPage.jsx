@@ -689,7 +689,7 @@ export default function EventsPage({ userRole, setUserRole }) {
     <div
       className={`app${isStudent ? ' student-mode' : ' faculty-mode'}`}
       ref={containerRef}
-      onContextMenu={e => isStudent && e.preventDefault()}
+      onContextMenu={null}
     >
       {/* ── Ticker bar — matching homepage ── */}
       <div className="ticker-bar">
