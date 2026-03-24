@@ -343,6 +343,10 @@
    RESPONSIVE v4 – Mobile First Fixes
 =================================================== */
 
+/* ===================================================
+   RESPONSIVE v5 – Refined Mobile Optimization
+=================================================== */
+
 @media (max-width: 1100px) {
   .split-left { padding: 60px 40px 72px 48px; }
   .split-right { padding: 40px 32px 40px 0; }
@@ -354,21 +358,33 @@
 
 /* 768px - Tablet & Mobile Focus */
 @media (max-width: 860px) {
+  .top-nav { padding: 12px 0; }
+  .nav-container { padding: 0 16px; flex-direction: column; gap: 12px; align-items: center; }
+  .nav-right { width: 100%; }
+  .nav-links { 
+    display: flex; 
+    justify-content: center; 
+    gap: 20px; /* Increased gap as requested */
+    width: 100%;
+    flex-wrap: wrap; 
+  }
+  .blog-brand-label { display: none; }
+  
   .split-hero { 
     grid-template-columns: 1fr; 
     min-height: auto;
   }
   .split-left { 
-    padding: 64px 24px 56px; 
-    align-items: flex-start;
-    text-align: left;
+    padding: 48px 16px 40px; /* Standard 16px padding */
+    align-items: center;
+    text-align: center;
   }
   .split-left::after { display: none; }
-  .split-sub { max-width: 100%; margin-bottom: 32px; font-size: 0.95rem; }
-  .split-title { font-size: clamp(2rem, 8vw, 2.8rem); }
+  .split-title { font-size: clamp(2rem, 9vw, 3rem); line-height: 1.2; margin-bottom: 16px; }
+  .split-sub { max-width: 100%; margin-bottom: 28px; font-size: 0.95rem; line-height: 1.6; }
   
   .split-right { 
-    padding: 0 24px 72px; 
+    padding: 0 16px 64px; /* Standard 16px padding */
     background: var(--secondary);
     justify-content: center;
   }
@@ -382,53 +398,48 @@
   
   .highlight-grid {
     grid-template-columns: 1fr;
-    gap: 20px;
+    gap: 24px;
+    padding: 0 16px;
   }
-  .highlight-card-img {
-    height: 200px;
-  }
+  .highlight-card-img { height: 200px; }
+  .campus-highlights { padding: 60px 0; }
 
-  .blog-section-container { padding: 0 20px; }
+  .blog-section-container { padding: 0 16px; }
   .blog-announcements-section { padding: 60px 0; }
-  .stats-strip { padding: 32px 20px; }
-  .stat-number { font-size: 2.1rem; }
-  
-  .top-nav .nav-container {
-    padding: 0 20px;
-  }
-  .nav-links {
-    gap: 15px;
-  }
-  .blog-brand-label { display: none; }
+  .stats-strip { padding: 40px 16px; gap: 32px; flex-direction: column; }
+  .stat-item { width: 100%; }
+  .stat-number { font-size: 2.2rem; }
 }
 
 /* 480px - Small Phones */
 @media (max-width: 480px) {
+  .nav-links { gap: 12px; } /* Slightly tighter for very small screens but still touch-friendly */
+  .nav-text-link { font-size: 0.85rem; }
+  
   .split-title { font-size: 2.1rem; letter-spacing: -.5px; }
-  .split-sub { font-size: 0.9rem; line-height: 1.7; }
-  .blog-announce-grid { grid-template-columns: 1fr; }
+  .split-sub { font-size: 0.9rem; margin-bottom: 24px; }
   
-  .split-cta-primary {
-    width: 100%;
-    justify-content: center;
-  }
-  .split-links {
-    flex-direction: column;
-    gap: 12px;
-  }
+  .split-actions { flex-direction: column; width: 100%; gap: 12px; }
+  .split-cta-primary { width: 100%; justify-content: center; }
+  .split-links { flex-direction: column; gap: 8px; font-size: 0.85rem; }
   
-  .stat-item { width: 45%; }
   .ticker-label { padding: 0 12px; font-size: 0.6rem; }
+  .blog-announce-grid { grid-template-columns: 1fr; gap: 20px; }
   
-  .footer-official { padding: 40px 20px; }
+  .footer-official { padding: 40px 16px; }
 }
 
-/* Utility: Ensure no horizontal scroll and image safety */
-img, .bg-img-protected {
-  max-width: 100%;
-  height: auto;
+/* Global Fixes: No horizontal scroll and image safety */
+img, .bg-img-protected, .split-img-actual {
+  max-width: 100% !important;
+  height: auto !important;
 }
 
 body {
-  overflow-x: hidden;
+  overflow-x: hidden !important;
+  width: 100% !important;
+}
+
+main {
+  overflow: hidden;
 }
