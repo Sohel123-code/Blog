@@ -12,6 +12,14 @@ const PORT = process.env.PORT || 3000;
 app.use(cors());
 app.use(express.json());
 
+// DIAGNOSTIC ROOT - If you see this, the backend is ALIVE
+app.get('/', (req, res) => {
+  res.json({ status: "ALIVE", service: "Vignan Events Backend", time: new Date().toISOString() });
+});
+
+// PROXY/DEBUG ROUTE
+app.get('/ping', (req, res) => res.send('pong'));
+
 cloudinary.config({
   cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
   api_key: process.env.CLOUDINARY_API_KEY,
@@ -112,6 +120,12 @@ app.get('/all-events', async (req, res) => {
     } catch (err) {
         res.status(500).send(err.message);
     }
+});
+
+// CATCH-ALL 404 - If you see this, the app started but the route is wrong
+app.use((req, res) => {
+  console.log(`❌ 404 Not Found: ${req.method} ${req.url}`);
+  res.status(404).json({ error: "Route not found on this backend", requestedUrl: req.url });
 });
 
 app.listen(PORT, () => {
