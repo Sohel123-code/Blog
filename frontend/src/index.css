@@ -1,8 +1,8 @@
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Poppins:wght@500;600;700;800&display=swap');
 
 :root {
-  /* Institutional Palette */
-  --primary: #37319c;
+  /* Institutional Palette - Unified Dark Blue */
+  --primary: #1c3350;
   --secondary: #1c3350;
   --light-bg: #f5f7fb;
   --card-bg: #ffffff;
@@ -10,7 +10,7 @@
   --text-muted: #64748b;
   --danger: #ef4444;
   --success: #10b981;
-  --aurora: linear-gradient(135deg, #0f172a 0%, #1d4ed8 100%);
+  --aurora: linear-gradient(135deg, #0a0f1d 0%, #1c3350 100%);
   
   /* Borders & Shadows */
   --radius-card: 20px;
