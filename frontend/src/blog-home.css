@@ -164,7 +164,7 @@
 .ticker-content {
   display: flex;
   white-space: nowrap;
-  animation: marqueeScroll 36s linear infinite;
+  animation: marqueeScroll 24s linear infinite;
 }
 
 .ticker-item {
