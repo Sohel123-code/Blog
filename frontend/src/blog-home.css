@@ -213,19 +213,19 @@
 */
 .split-img-frame {
   position: relative; z-index: 3;
-  width: calc(100% + 80px);   /* wider than its column */
-  max-width: 560px;
+  width: calc(100% + 100px);   /* wider than its column */
+  max-width: 580px;
   aspect-ratio: 4 / 3;
-  margin-left: -80px;         /* bleed into white panel */
-  border-radius: 16px;
+  margin-left: -100px;         /* bleed further into white panel */
+  border-radius: 20px;
   overflow: hidden;
-  box-shadow: 0 24px 72px rgba(0,0,0,.35);
+  box-shadow: 0 32px 80px rgba(0,0,0,.35);
 }
 
-.split-img {
+.split-img-actual {
   width: 100%; height: 100%;
-  background-size: cover;
-  background-position: center;
+  object-fit: cover;
+  display: block;
 }
 
 /* Glass badge on the image */
@@ -298,28 +298,137 @@
 /* ===================================================
    RESPONSIVE
 =================================================== */
+/* ── Campus Highlights Styling ── */
+.campus-highlights {
+  padding: 80px 0;
+  background: #fff;
+}
+.highlight-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 32px;
+}
+.highlight-card {
+  background: #f8fafc;
+  border-radius: 16px;
+  overflow: hidden;
+  border: 1px solid #e2e8f0;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+.highlight-card:hover {
+  transform: translateY(-8px);
+  box-shadow: 0 20px 40px rgba(0,0,0,0.06);
+}
+.highlight-card-img {
+  height: 220px;
+  background-size: cover;
+  background-position: center;
+}
+.highlight-card-body {
+  padding: 24px;
+}
+.highlight-title {
+  font-size: 1.2rem;
+  font-weight: 700;
+  color: #0c1322;
+  margin-bottom: 8px;
+}
+.highlight-desc {
+  font-size: 0.92rem;
+  color: #64748b;
+  line-height: 1.6;
+}
+
+/* ===================================================
+   RESPONSIVE v4 – Mobile First Fixes
+=================================================== */
+
 @media (max-width: 1100px) {
   .split-left { padding: 60px 40px 72px 48px; }
   .split-right { padding: 40px 32px 40px 0; }
   .split-img-frame { margin-left: -48px; width: calc(100% + 48px); }
   .blog-section-container { padding: 0 40px; }
   .stats-strip { padding: 28px 40px; }
+  .highlight-grid { gap: 24px; }
 }
 
+/* 768px - Tablet & Mobile Focus */
 @media (max-width: 860px) {
-  .split-hero { grid-template-columns: 1fr; }
-  .split-left { padding: 52px 24px 44px; align-items: flex-start; }
+  .split-hero { 
+    grid-template-columns: 1fr; 
+    min-height: auto;
+  }
+  .split-left { 
+    padding: 64px 24px 56px; 
+    align-items: flex-start;
+    text-align: left;
+  }
   .split-left::after { display: none; }
-  .split-sub { max-width: 100%; }
-  .split-right { padding: 0 24px 48px; }
-  .split-img-frame { margin-left: 0; width: 100%; max-width: 100%; aspect-ratio: 16/9; }
-  .blog-section-container { padding: 0 24px; }
-  .blog-announcements-section { padding: 56px 0; }
-  .stats-strip { padding: 24px; }
-  .stat-number { font-size: 2rem; }
+  .split-sub { max-width: 100%; margin-bottom: 32px; font-size: 0.95rem; }
+  .split-title { font-size: clamp(2rem, 8vw, 2.8rem); }
+  
+  .split-right { 
+    padding: 0 24px 72px; 
+    background: var(--secondary);
+    justify-content: center;
+  }
+  .split-img-frame { 
+    margin-left: 0; 
+    width: 100%; 
+    max-width: 100%; 
+    aspect-ratio: 4/3; 
+    border-radius: 20px;
+  }
+  
+  .highlight-grid {
+    grid-template-columns: 1fr;
+    gap: 20px;
+  }
+  .highlight-card-img {
+    height: 200px;
+  }
+
+  .blog-section-container { padding: 0 20px; }
+  .blog-announcements-section { padding: 60px 0; }
+  .stats-strip { padding: 32px 20px; }
+  .stat-number { font-size: 2.1rem; }
+  
+  .top-nav .nav-container {
+    padding: 0 20px;
+  }
+  .nav-links {
+    gap: 15px;
+  }
+  .blog-brand-label { display: none; }
 }
 
+/* 480px - Small Phones */
 @media (max-width: 480px) {
-  .split-title { font-size: 2.2rem; letter-spacing: -.5px; }
+  .split-title { font-size: 2.1rem; letter-spacing: -.5px; }
+  .split-sub { font-size: 0.9rem; line-height: 1.7; }
   .blog-announce-grid { grid-template-columns: 1fr; }
+  
+  .split-cta-primary {
+    width: 100%;
+    justify-content: center;
+  }
+  .split-links {
+    flex-direction: column;
+    gap: 12px;
+  }
+  
+  .stat-item { width: 45%; }
+  .ticker-label { padding: 0 12px; font-size: 0.6rem; }
+  
+  .footer-official { padding: 40px 20px; }
+}
+
+/* Utility: Ensure no horizontal scroll and image safety */
+img, .bg-img-protected {
+  max-width: 100%;
+  height: auto;
+}
+
+body {
+  overflow-x: hidden;
 }

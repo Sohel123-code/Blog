@@ -201,9 +201,16 @@ function HomePage({ userRole, setUserRole }) {
           {/* ── RIGHT: dark navy panel with image bridging the split ── */}
           <div className="split-right">
             <div className="split-img-frame protected-img-container watermark-overlay blog-anim-img">
-              <div
-                className="bg-img-protected split-img"
-                style={{ backgroundImage: "url('/images/Students-discussing-engaging-events-on-college-campuses-1024x683.jpg')" }}
+              <img
+                src="/images/r1.jpeg"
+                alt="VIIT Campus"
+                className="bg-img-protected split-img-actual"
+                style={{ width: '100%', height: '100%', objectFit: 'cover' }}
+                onLoad={() => console.log('Hero image loaded successfully')}
+                onError={(e) => {
+                  console.error('Failed to load hero image:', e);
+                  e.target.src = 'https://via.placeholder.com/800x600?text=Vignan+Campus';
+                }}
               />
               <div className="split-badge blog-anim-4">
                 <span className="split-badge-num">120+</span>
@@ -223,6 +230,37 @@ function HomePage({ userRole, setUserRole }) {
           {STATS.map((s) => (
             <StatCounter key={s.label} value={s.value} suffix={s.suffix} label={s.label} start={statsInView} />
           ))}
+        </section>
+
+        {/* ══════════════════════════════════════════
+            CAMPUS HIGHLIGHTS (New Cards Section)
+        ══════════════════════════════════════════ */}
+        <section className="campus-highlights">
+          <div className="blog-section-container">
+            <div className="highlight-grid">
+              <div className="highlight-card reveal-in" style={{ transitionDelay: '100ms' }}>
+                <div className="highlight-card-img" style={{ backgroundImage: "url('/images/r4.jpeg')" }} />
+                <div className="highlight-card-body">
+                  <h3 className="highlight-title">Modern Classrooms</h3>
+                  <p className="highlight-desc">Experience state-of-the-art learning environments at Vignan.</p>
+                </div>
+              </div>
+              <div className="highlight-card reveal-in" style={{ transitionDelay: '200ms' }}>
+                <div className="highlight-card-img" style={{ backgroundImage: "url('/images/r16.jpeg')" }} />
+                <div className="highlight-card-body">
+                  <h3 className="highlight-title">Student Hub</h3>
+                  <p className="highlight-desc">Vibrant spaces for students to collaborate and innovate.</p>
+                </div>
+              </div>
+              <div className="highlight-card reveal-in" style={{ transitionDelay: '300ms' }}>
+                <div className="highlight-card-img" style={{ backgroundImage: "url('/images/r15.jpeg')" }} />
+                <div className="highlight-card-body">
+                  <h3 className="highlight-title">Vibrant Campus</h3>
+                  <p className="highlight-desc">Join our diverse community filled with growth and creativity.</p>
+                </div>
+              </div>
+            </div>
+          </div>
         </section>
 
         {/* ══════════════════════════════════════════
@@ -247,7 +285,7 @@ function HomePage({ userRole, setUserRole }) {
 
       <footer className="footer-official">
         <div className="footer-bottom">
-          <p>© {new Date().getFullYear()} VIGNAN'S Institute of Information Technology. All rights reserved.</p>
+          <p>&copy; {new Date().getFullYear()} VIGNAN'S Institute of Information Technology. All rights reserved.</p>
         </div>
       </footer>
 
